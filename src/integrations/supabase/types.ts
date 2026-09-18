@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      emg_measurements: {
+        Row: {
+          clench_seconds: number
+          created_at: string
+          episodes: number
+          id: string
+          is_demo: boolean
+          measured_at: string
+          note: string | null
+          peak_uv: number
+          rms_uv: number
+          side: string
+          sleep_hours: number | null
+          user_id: string | null
+        }
+        Insert: {
+          clench_seconds?: number
+          created_at?: string
+          episodes?: number
+          id?: string
+          is_demo?: boolean
+          measured_at: string
+          note?: string | null
+          peak_uv: number
+          rms_uv: number
+          side?: string
+          sleep_hours?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          clench_seconds?: number
+          created_at?: string
+          episodes?: number
+          id?: string
+          is_demo?: boolean
+          measured_at?: string
+          note?: string | null
+          peak_uv?: number
+          rms_uv?: number
+          side?: string
+          sleep_hours?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
