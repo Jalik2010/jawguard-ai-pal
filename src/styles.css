@@ -57,12 +57,60 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --shadow-panel: 0 24px 60px -30px oklch(0.05 0.03 220 / 0.85);
+  --shadow-panel: var(--panel-shadow);
   --shadow-glow: 0 0 0 1px oklch(0.72 0.13 190 / 0.35), 0 18px 45px -22px oklch(0.72 0.13 190 / 0.5);
 }
 
+/* Светлая тема (по умолчанию для класса .light / без класса .dark) */
 :root {
   --radius: 0.75rem;
+  --background: oklch(0.985 0.005 220);
+  --foreground: oklch(0.22 0.03 235);
+  --surface: oklch(1 0 0);
+  --surface-foreground: oklch(0.22 0.03 235);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.03 235);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.03 235);
+  --primary: oklch(0.58 0.11 195);
+  --primary-foreground: oklch(0.99 0.005 220);
+  --secondary: oklch(0.94 0.012 225);
+  --secondary-foreground: oklch(0.26 0.03 235);
+  --muted: oklch(0.95 0.01 225);
+  --muted-foreground: oklch(0.5 0.025 235);
+  --accent: oklch(0.92 0.03 195);
+  --accent-foreground: oklch(0.26 0.03 235);
+  --destructive: oklch(0.58 0.2 25);
+  --destructive-foreground: oklch(0.99 0.005 220);
+  --warning: oklch(0.7 0.14 70);
+  --warning-foreground: oklch(0.99 0.005 220);
+  --success: oklch(0.6 0.14 155);
+  --success-foreground: oklch(0.99 0.005 220);
+  --border: oklch(0.89 0.012 228);
+  --input: oklch(0.89 0.012 228);
+  --ring: oklch(0.58 0.11 195);
+  --chart-1: oklch(0.58 0.11 195);
+  --chart-2: oklch(0.7 0.14 70);
+  --chart-3: oklch(0.55 0.15 300);
+  --chart-4: oklch(0.6 0.14 155);
+  --chart-5: oklch(0.58 0.18 25);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.22 0.03 235);
+  --sidebar-primary: oklch(0.58 0.11 195);
+  --sidebar-primary-foreground: oklch(0.99 0.005 220);
+  --sidebar-accent: oklch(0.94 0.012 225);
+  --sidebar-accent-foreground: oklch(0.26 0.03 235);
+  --sidebar-border: oklch(0.89 0.012 228);
+  --sidebar-ring: oklch(0.58 0.11 195);
+  --panel-from: oklch(1 0 0 / 0.95);
+  --panel-to: oklch(0.975 0.006 225 / 0.95);
+  --panel-shadow: 0 18px 45px -32px oklch(0.4 0.04 235 / 0.35);
+  --grid-line: oklch(0.2 0.03 235 / 0.06);
+  --glow-1: oklch(0.58 0.11 195 / 0.1);
+  --glow-2: oklch(0.7 0.14 70 / 0.07);
+}
+
+.dark {
   --background: oklch(0.17 0.025 235);
   --foreground: oklch(0.95 0.008 220);
   --surface: oklch(0.225 0.028 235);
