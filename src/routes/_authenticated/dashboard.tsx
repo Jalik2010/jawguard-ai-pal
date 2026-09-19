@@ -174,6 +174,7 @@ function Dashboard() {
           </div>
           <div className="flex items-center gap-2">
             <AddMeasurementDialog onSaved={() => void queryClient.invalidateQueries()} />
+            <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={handleSignOut}>
               <LogOut className="size-4" /> Выйти
             </Button>
