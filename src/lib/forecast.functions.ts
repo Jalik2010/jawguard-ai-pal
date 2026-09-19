@@ -87,42 +87,89 @@ export const buildForecast = createServerFn({ method: "POST" })
     if (!apiKey) return fallback;
 
     try {
-      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      const response = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+        headers: {
+          "Content-Type": "application/json",
+          "Lovable-API-Key": apiKey,
+          "X-Lovable-AIG-SDK": "fetch",
+        },
         body: JSON.stringify({
-          model: "google/gemini-3.8-flash",
-          messages: [
-            {
-              role: "system",
-              content:
-                "Ты помогаешь исследователям анализировать данные поверхностной ЭМГ жевательных мышц (бруксизм). Отвечай ТОЛЬКО валидным JSON вида {\"summary\": string, \"risk\": \"low\"|\"moderate\"|\"high\", \"recommendations\": string[]}. Пиши по-русски, 2-3 предложения в summary, 3-4 коротких рекомендации. Не ставь диагнозов, говори об исследовательских наблюдениях.",
-            },
+          model: "openai/gpt-6-astra",
+          stream: true,
+          store: false,
+          reasoning: { effort: "low", summary: "auto" },
+          instructions:
+            "Ты помогаешь исследователям анализировать данные поверхностной ЭМГ жевательных мышц (бруксизм). Пиши по-русски: 2-3 предложения обзора и 3-4 короткие рекомендации. Не ставь диагнозов, говори об исследовательских наблюдениях.",
+          input: [
             {
               role: "user",
-              content: JSON.stringify({
-                period: { from: data.from, to: data.to },
-                nights: summary.nights,
-                avg_rms_uv: summary.avgRms,
-                max_peak_uv: summary.maxPeak,
-                avg_episodes_per_night: summary.avgEpisodes,
-                avg_clench_minutes: summary.avgClenchMinutes,
-                trend_percent: summary.trendPercent,
-                daily: daily.slice(-30),
-                statistical_forecast: points,
-              }),
+              content: [
+                {
+                  type: "input_text",
+                  text: JSON.stringify({
+                    period: { from: data.from, to: data.to },
+                    nights: summary.nights,
+                    avg_rms_uv: summary.avgRms,
+                    max_peak_uv: summary.maxPeak,
+                    avg_episodes_per_night: summary.avgEpisodes,
+                    avg_clench_minutes: summary.avgClenchMinutes,
+                    trend_percent: summary.trendPercent,
+                    daily: daily.slice(-30),
+                    statistical_forecast: points,
+                  }),
+                },
+              ],
             },
           ],
-          reasoning_effort: "none",
+          text: {
+            format: {
+              type: "json_schema",
+              name: "bruxism_forecast",
+              strict: true,
+              schema: {
+                type: "object",
+                additionalProperties: false,
+                required: ["summary", "risk", "recommendations"],
+                properties: {
+                  summary: { type: "string" },
+                  risk: { type: "string", enum: ["low", "moderate", "high"] },
+                  recommendations: { type: "array", items: { type: "string" } },
+                },
+              },
+            },
+          },
         }),
       });
 
-      if (!response.ok) return fallback;
+      if (!response.ok || !response.body) return fallback;
 
-      const payload = (await response.json()) as {
-        choices?: { message?: { content?: string } }[];
-      };
-      const content = payload.choices?.[0]?.message?.content ?? "";
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let content = "";
+
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+        for (const line of lines) {
+          if (!line.startsWith("data:")) continue;
+          const raw = line.slice(5).trim();
+          if (raw === "" || raw === "[DONE]") continue;
+          try {
+            const event = JSON.parse(raw) as { type?: string; delta?: string };
+            if (event.type === "response.output_text.delta" && typeof event.delta === "string") {
+              content += event.delta;
+            }
+          } catch {
+            // игнорируем частичные события
+          }
+        }
+      }
+
       const json = content.slice(content.indexOf("{"), content.lastIndexOf("}") + 1);
       const parsed = JSON.parse(json) as {
         summary?: string;
