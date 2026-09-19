@@ -26,6 +26,7 @@ import {
 } from "recharts";
 import { toast } from "sonner";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { AddMeasurementDialog } from "@/components/emg/AddMeasurementDialog";
 import { StatCard } from "@/components/emg/StatCard";
 import { Button } from "@/components/ui/button";
