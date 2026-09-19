@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Activity, ArrowLeft, Loader2, MailCheck, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
