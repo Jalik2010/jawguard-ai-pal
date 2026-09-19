@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Activity, ArrowLeft, Loader2, MailCheck, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -122,11 +123,14 @@ function AuthPage() {
           <Activity className="size-5 text-primary" />
           <span className="font-display font-semibold">Bruxa Research</span>
         </Link>
-        <Button asChild variant="ghost" size="sm">
-          <Link to="/">
-            <ArrowLeft className="size-4" /> На главную
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Button asChild variant="ghost" size="sm">
+            <Link to="/">
+              <ArrowLeft className="size-4" /> На главную
+            </Link>
+          </Button>
+        </div>
       </header>
 
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-5 pb-16">

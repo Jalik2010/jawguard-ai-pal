@@ -26,6 +26,7 @@ import {
 } from "recharts";
 import { toast } from "sonner";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { AddMeasurementDialog } from "@/components/emg/AddMeasurementDialog";
 import { StatCard } from "@/components/emg/StatCard";
 import { Button } from "@/components/ui/button";
@@ -174,6 +175,7 @@ function Dashboard() {
           </div>
           <div className="flex items-center gap-2">
             <AddMeasurementDialog onSaved={() => void queryClient.invalidateQueries()} />
+            <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={handleSignOut}>
               <LogOut className="size-4" /> Выйти
             </Button>
