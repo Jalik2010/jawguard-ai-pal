@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
-import { Activity, ArrowLeft, Loader2, MailCheck, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -120,7 +120,6 @@ function AuthPage() {
     <div className="flex min-h-screen flex-col">
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 py-6">
         <Link to="/" className="flex items-center gap-2">
-          <Activity className="size-5 text-primary" />
           <span className="font-display font-semibold">Bruxa Research</span>
         </Link>
         <div className="flex items-center gap-2">
@@ -137,13 +136,9 @@ function AuthPage() {
         <div className="panel p-7">
           {step === "code" ? (
             <form onSubmit={handleCode} className="space-y-5">
-              <div className="flex items-center gap-2 text-primary">
-                <ShieldCheck className="size-5" />
-                <h1 className="text-xl font-semibold">Второй фактор</h1>
-              </div>
+              <h1 className="text-xl font-semibold">Код из письма</h1>
               <p className="text-sm text-muted-foreground">
-                Мы отправили письмо на <span className="text-foreground">{email}</span>. Введите
-                6-значный код из письма — или откройте ссылку в этом письме, чтобы завершить вход.
+                Отправлен на <span className="text-foreground">{email}</span>
               </p>
               <div className="space-y-2">
                 <Label htmlFor="code">Код из письма</Label>
@@ -174,11 +169,9 @@ function AuthPage() {
             </form>
           ) : signupDone ? (
             <div className="space-y-4 text-center">
-              <MailCheck className="mx-auto size-8 text-primary" />
               <h1 className="text-xl font-semibold">Подтвердите почту</h1>
               <p className="text-sm text-muted-foreground">
-                Мы отправили письмо на {email}. Перейдите по ссылке из письма, затем войдите с
-                паролем и одноразовым кодом.
+                Письмо отправлено на {email}.
               </p>
               <Button variant="secondary" className="w-full" onClick={() => setSignupDone(false)}>
                 Вернуться к входу
@@ -192,10 +185,7 @@ function AuthPage() {
               </TabsList>
 
               <TabsContent value="signin" className="mt-6">
-                <h1 className="text-xl font-semibold">Вход в панель исследования</h1>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Шаг 1 из 2: пароль. Затем придёт одноразовый код на почту.
-                </p>
+                <h1 className="text-xl font-semibold">Вход</h1>
                 <form onSubmit={handleCredentials} className="mt-5 space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email">Электронная почта</Label>
@@ -226,10 +216,7 @@ function AuthPage() {
               </TabsContent>
 
               <TabsContent value="signup" className="mt-6">
-                <h1 className="text-xl font-semibold">Регистрация исследователя</h1>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  После подтверждения почты вход всегда будет в два шага.
-                </p>
+                <h1 className="text-xl font-semibold">Регистрация</h1>
                 <form onSubmit={handleSignUp} className="mt-5 space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email-up">Электронная почта</Label>

@@ -57,8 +57,6 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --shadow-panel: var(--panel-shadow);
-  --shadow-glow: 0 0 0 1px oklch(0.72 0.13 190 / 0.35), 0 18px 45px -22px oklch(0.72 0.13 190 / 0.5);
 }
 
 /* Светлая тема (по умолчанию для класса .light / без класса .dark) */
@@ -102,12 +100,6 @@
   --sidebar-accent-foreground: oklch(0.26 0.03 235);
   --sidebar-border: oklch(0.89 0.012 228);
   --sidebar-ring: oklch(0.58 0.11 195);
-  --panel-from: oklch(1 0 0 / 0.95);
-  --panel-to: oklch(0.975 0.006 225 / 0.95);
-  --panel-shadow: 0 18px 45px -32px oklch(0.4 0.04 235 / 0.35);
-  --grid-line: oklch(0.2 0.03 235 / 0.06);
-  --glow-1: oklch(0.58 0.11 195 / 0.1);
-  --glow-2: oklch(0.7 0.14 70 / 0.07);
 }
 
 .dark {
@@ -149,12 +141,6 @@
   --sidebar-accent-foreground: oklch(0.95 0.008 220);
   --sidebar-border: oklch(0.32 0.03 232);
   --sidebar-ring: oklch(0.76 0.13 190);
-  --panel-from: oklch(0.245 0.03 235 / 0.95);
-  --panel-to: oklch(0.195 0.026 235 / 0.95);
-  --panel-shadow: 0 24px 60px -30px oklch(0.05 0.03 220 / 0.85);
-  --grid-line: oklch(1 0 0 / 0.04);
-  --glow-1: oklch(0.76 0.13 190 / 0.12);
-  --glow-2: oklch(0.79 0.15 75 / 0.08);
 }
 
 @layer base {
@@ -166,10 +152,6 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    background-image:
-      radial-gradient(60rem 40rem at 15% -10%, var(--glow-1), transparent 70%),
-      radial-gradient(50rem 35rem at 95% 0%, var(--glow-2), transparent 70%);
-    background-attachment: fixed;
   }
 
   h1,
@@ -177,27 +159,12 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
   }
 }
 
 @utility panel {
   border-radius: var(--radius-xl);
   border: 1px solid var(--color-border);
-  background: linear-gradient(160deg, var(--panel-from), var(--panel-to));
-  box-shadow: var(--shadow-panel);
-}
-
-@utility text-signal {
-  background: linear-gradient(95deg, var(--color-primary), oklch(0.85 0.12 150));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@utility grid-lines {
-  background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 48px 48px;
+  background: var(--color-card);
 }
