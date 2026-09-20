@@ -3,15 +3,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import {
-  Activity,
-  BrainCircuit,
-  Gauge,
   LogOut,
   Loader2,
-  Timer,
-  TrendingUp,
   Trash2,
-  Zap,
 } from "lucide-react";
 import {
   Area,
@@ -39,7 +33,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { deleteMeasurement, listMeasurements } from "@/lib/emg.functions";
@@ -167,10 +160,9 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-border/70 bg-surface/40 backdrop-blur">
+      <header className="border-b border-border bg-surface">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-4">
           <div className="flex items-center gap-2">
-            <Activity className="size-5 text-primary" />
             <span className="font-display font-semibold">Bruxa Research</span>
           </div>
           <div className="flex items-center gap-2">
@@ -237,12 +229,11 @@ function Dashboard() {
         </section>
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          <StatCard icon={Gauge} label="Ночей в периоде" value={summary.nights} />
-          <StatCard icon={Activity} label="Средняя активность" value={summary.avgRms} unit="мкВ" />
-          <StatCard icon={Zap} label="Максимум" value={summary.maxPeak} unit="мкВ" />
-          <StatCard icon={Timer} label="Эпизоды за ночь" value={summary.avgEpisodes} />
+          <StatCard label="Ночей в периоде" value={summary.nights} />
+          <StatCard label="Средняя активность" value={summary.avgRms} unit="мкВ" />
+          <StatCard label="Максимум" value={summary.maxPeak} unit="мкВ" />
+          <StatCard label="Эпизоды за ночь" value={summary.avgEpisodes} />
           <StatCard
-            icon={TrendingUp}
             label="Динамика"
             value={`${summary.trendPercent > 0 ? "+" : ""}${summary.trendPercent}`}
             unit="%"
@@ -253,9 +244,8 @@ function Dashboard() {
         <section className="panel p-5">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-lg font-semibold">Активность жевательных мышц и прогноз</h2>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="text-xs text-muted-foreground">
               {measurementsQuery.isFetching ? <Loader2 className="size-3 animate-spin" /> : null}
-              мкВ · среднеквадратичное значение сигнала за ночь
             </div>
           </div>
 
@@ -336,13 +326,7 @@ function Dashboard() {
         <section className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
           <div className="panel p-5">
             <div className="flex items-center gap-2">
-              <BrainCircuit className="size-5 text-primary" />
               <h2 className="text-lg font-semibold">ИИ-прогноз</h2>
-              {forecast?.aiGenerated ? (
-                <Badge variant="secondary" className="ml-auto">
-                  анализ ИИ
-                </Badge>
-              ) : null}
             </div>
 
             {forecastQuery.isPending ? (
@@ -390,9 +374,7 @@ function Dashboard() {
 
           <div className="panel p-5">
             <h2 className="text-lg font-semibold">Записи периода</h2>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Всего измерений: {rows.length}. Удалять можно только свои записи.
-            </p>
+            <p className="mt-1 text-xs text-muted-foreground">Всего: {rows.length}</p>
             <div className="mt-4 max-h-[420px] overflow-auto">
               <table className="w-full text-sm">
                 <thead className="text-left text-xs text-muted-foreground uppercase">
