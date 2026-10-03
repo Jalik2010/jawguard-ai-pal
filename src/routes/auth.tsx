@@ -40,6 +40,7 @@ function AuthPage() {
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [signupDone, setSignupDone] = useState(false);
+  const [resetDone, setResetDone] = useState(false);
 
   useEffect(() => {
     void supabase.auth.getSession().then(({ data }) => {
@@ -92,6 +93,27 @@ function AuthPage() {
       }
       toast.success("Вход выполнен");
       await navigate({ to: "/dashboard", replace: true });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleForgot(event: React.MouseEvent) {
+    event.preventDefault();
+    if (!email.trim()) {
+      toast.error("Введите почту в поле выше — на неё придёт ссылка.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) {
+        toast.error("Не удалось отправить письмо: " + error.message);
+        return;
+      }
+      setResetDone(true);
     } finally {
       setBusy(false);
     }
@@ -177,6 +199,16 @@ function AuthPage() {
                 Вернуться к входу
               </Button>
             </div>
+          ) : resetDone ? (
+            <div className="space-y-4 text-center">
+              <h1 className="text-xl font-semibold">Проверьте почту</h1>
+              <p className="text-sm text-muted-foreground">
+                Ссылка для смены пароля отправлена на {email}.
+              </p>
+              <Button variant="secondary" className="w-full" onClick={() => setResetDone(false)}>
+                Вернуться к входу
+              </Button>
+            </div>
           ) : (
             <Tabs defaultValue="signin">
               <TabsList className="grid w-full grid-cols-2">
@@ -212,6 +244,13 @@ function AuthPage() {
                   <Button type="submit" className="w-full" disabled={busy}>
                     {busy ? <Loader2 className="size-4 animate-spin" /> : null} Продолжить
                   </Button>
+                  <button
+                    type="button"
+                    className="w-full text-sm text-muted-foreground hover:text-foreground"
+                    onClick={handleForgot}
+                  >
+                    Забыли пароль?
+                  </button>
                 </form>
               </TabsContent>
 
