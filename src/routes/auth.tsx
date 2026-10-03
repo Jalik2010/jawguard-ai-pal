@@ -40,6 +40,7 @@ function AuthPage() {
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [signupDone, setSignupDone] = useState(false);
+  const [resetDone, setResetDone] = useState(false);
 
   useEffect(() => {
     void supabase.auth.getSession().then(({ data }) => {
@@ -92,6 +93,27 @@ function AuthPage() {
       }
       toast.success("Вход выполнен");
       await navigate({ to: "/dashboard", replace: true });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleForgot(event: React.MouseEvent) {
+    event.preventDefault();
+    if (!email.trim()) {
+      toast.error("Введите почту в поле выше — на неё придёт ссылка.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) {
+        toast.error("Не удалось отправить письмо: " + error.message);
+        return;
+      }
+      setResetDone(true);
     } finally {
       setBusy(false);
     }
