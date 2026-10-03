@@ -199,6 +199,16 @@ function AuthPage() {
                 Вернуться к входу
               </Button>
             </div>
+          ) : resetDone ? (
+            <div className="space-y-4 text-center">
+              <h1 className="text-xl font-semibold">Проверьте почту</h1>
+              <p className="text-sm text-muted-foreground">
+                Ссылка для смены пароля отправлена на {email}.
+              </p>
+              <Button variant="secondary" className="w-full" onClick={() => setResetDone(false)}>
+                Вернуться к входу
+              </Button>
+            </div>
           ) : (
             <Tabs defaultValue="signin">
               <TabsList className="grid w-full grid-cols-2">
@@ -234,6 +244,13 @@ function AuthPage() {
                   <Button type="submit" className="w-full" disabled={busy}>
                     {busy ? <Loader2 className="size-4 animate-spin" /> : null} Продолжить
                   </Button>
+                  <button
+                    type="button"
+                    className="w-full text-sm text-muted-foreground hover:text-foreground"
+                    onClick={handleForgot}
+                  >
+                    Забыли пароль?
+                  </button>
                 </form>
               </TabsContent>
 
